@@ -1,6 +1,6 @@
 // src/app/admin/layout.tsx
 import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
-import "../../master.css";
+import "../../global.css";
 
 const theme = createTheme();
 
