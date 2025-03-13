@@ -1,15 +1,20 @@
-// src/app/admin/layout.tsx
+"use client";
+
+import { useMemo } from "react";
 import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
 
-const theme = createTheme();
-
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  // Memoize the theme for consistency.
+  const theme = useMemo(() => createTheme(), []);
+
   return (
     <html lang="en">
-      <body style={{ margin: 0, padding: 0, height: "100vh", overflow: "hidden" }}>
+      <body style={{ margin: 0, height: "100vh", overflow: "hidden" }}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <main style={{ overflowY: "auto", height: "100%" }}>{children}</main>
+          <main style={{ overflowY: "auto", height: "100%" }}>
+            {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>
