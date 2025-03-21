@@ -9,16 +9,25 @@ const AdminReviewsPage: React.FC = () => {
 
   return (
     <Box sx={{ padding: "2rem" }}>
-      <Typography variant="h4" gutterBottom>
-        Review Moderation
-      <Button variant="outlined" onClick={() => router.back()} sx={{ mb: 2 }}>
-        Back
-      </Button>        
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          Review Moderation
+        </Typography>
+        <Button variant="outlined" onClick={() => router.back()} sx={{ mr: 2 }}>
+          Back
+        </Button>
+      </Box>
       <Typography variant="body1">
         This page will list all reviews for detailed moderation actions.
       </Typography>
-      {/* Additional content for reviews can be added here */}
+      {/* Add additional review management functionality here */}
     </Box>
   );
 };

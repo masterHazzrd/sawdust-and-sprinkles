@@ -2,7 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Box, Grid, Typography, Card, CardActionArea, CardContent } from "@mui/material";
+import { signOut } from "next-auth/react";
+import {
+  Box,
+  Grid,
+  Typography,
+  Card,
+  CardActionArea,
+  CardContent,
+  Button,
+} from "@mui/material";
 import RequireAuth from "../../components/RequireAuth";
 
 interface Review {
@@ -61,11 +70,24 @@ const AdminDashboard: React.FC = () => {
   return (
     <RequireAuth>
       <Box sx={{ padding: "2rem" }}>
-        <Typography variant="h4" gutterBottom>
-          Admin Dashboard
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: 2,
+          }}
+        >
+          <Typography variant="h4" gutterBottom>
+            Admin Dashboard
+          </Typography>
+          <Button variant="outlined" onClick={() => signOut()} sx={{ mr: 2 }}>
+            Logout
+          </Button>
+        </Box>
         {error && <Typography color="error">{error}</Typography>}
         <Grid container spacing={4}>
+          {/* Reviews Preview Card */}
           <Grid item xs={12}>
             <Link href="/admin/reviews" passHref legacyBehavior>
               <Card>
@@ -81,8 +103,12 @@ const AdminDashboard: React.FC = () => {
                     ) : (
                       reviews.map((review) => (
                         <Box key={review._id} sx={{ mb: 1 }}>
-                          <Typography variant="body2">{review.message}</Typography>
-                          <Typography variant="caption">From: {review.email}</Typography>
+                          <Typography variant="body2">
+                            {review.message}
+                          </Typography>
+                          <Typography variant="caption">
+                            From: {review.email}
+                          </Typography>
                         </Box>
                       ))
                     )}
@@ -91,6 +117,7 @@ const AdminDashboard: React.FC = () => {
               </Card>
             </Link>
           </Grid>
+          {/* Contacts Preview Card */}
           <Grid item xs={12}>
             <Link href="/admin/contacts" passHref legacyBehavior>
               <Card>
@@ -106,7 +133,9 @@ const AdminDashboard: React.FC = () => {
                     ) : (
                       contacts.map((contact) => (
                         <Box key={contact._id} sx={{ mb: 1 }}>
-                          <Typography variant="body2">{contact.message}</Typography>
+                          <Typography variant="body2">
+                            {contact.message}
+                          </Typography>
                           <Typography variant="caption">
                             From: {contact.name} ({contact.email})
                           </Typography>
@@ -118,8 +147,9 @@ const AdminDashboard: React.FC = () => {
               </Card>
             </Link>
           </Grid>
+          {/* Product Image Management Preview Card */}
           <Grid item xs={12}>
-            <Link href="/admin/products" passHref legacyBehavior>
+            <Link href="/admin/product-gallery" passHref legacyBehavior>
               <Card>
                 <CardActionArea>
                   <CardContent>
