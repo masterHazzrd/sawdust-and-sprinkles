@@ -7,6 +7,7 @@ import ProductCard from "../../components/ProductCard";
 
 interface Product {
   id: number;
+  price: string;
   name: string;
   description: string;
   image: string;
@@ -15,57 +16,65 @@ interface Product {
 const products: Product[] = [
   {
     id: 1,
-    name: "Handcrafted Item 1",
-    description: "A unique piece made with care.",
-    image: "/next.svg", // replace with your image path
+    price: "$13.99",
+    name: "Holiday Hot Chocolate",
+    description: "A unique piece made with care.",    
+    image: "/FauxConfectionImages/Photoroom-20241120_123910.jpg",
   },
   {
     id: 2,
-    name: "Handcrafted Item 2",
-    description: "Another unique creation.",
-    image: "/vercel.svg", // replace with your image path
+    name: "Holiday Hot Chocolate",
+    description: "A unique piece made with care.",
+    price: "$13.99",
+    image: "/FauxConfectionImages/Photoroom-20241120_123910.jpg",
   },
   {
     id: 3,
-    name: "Handcrafted Item 3",
-    description: "A special creation that stands out.",
-    image: "/globe.svg", // replace with your image path
+    name: "Holiday Hot Chocolate",
+    description: "A unique piece made with care.",
+    price: "$13.99",
+    image: "/FauxConfectionImages/Photoroom-20241120_123910.jpg",
   },
   {
     id: 4,
-    name: "Handcrafted Item 1",
-    description: "A special creation that stands out.",
-    image: "/globe.svg",
+    name: "Holiday Hot Chocolate",
+    description: "A unique piece made with care.",
+    price: "$13.99",
+    image: "/FauxConfectionImages/Photoroom-20241120_123910.jpg",
   },
   {
     id: 5,
-    name: "Handcrafted Item 2",
+    name: "Holiday Hot Chocolate",
     description: "A unique piece made with care.",
-    image: "/next.svg",
+    price: "$13.99",
+    image: "/FauxConfectionImages/Photoroom-20241120_123910.jpg",
   },
   {
     id: 6,
-    name: "Handcrafted Item 3",
-    description: "Another unique creation.",
-    image: "/vercel.svg",
+    name: "Holiday Hot Chocolate",
+    description: "A unique piece made with care.",
+    price: "$13.99",
+    image: "/FauxConfectionImages/Photoroom-20241120_123910.jpg",
   },
   {
     id: 7,
-    name: "Handcrafted Item 1",
-    description: "A special creation that stands out.",
-    image: "/globe.svg",
+    name: "Holiday Hot Chocolate",
+    description: "A unique piece made with care.",
+    price: "$13.99",
+    image: "/FauxConfectionImages/Photoroom-20241120_123910.jpg",
   },
   {
     id: 8,
-    name: "Handcrafted Item 2",
-    description: "A special creation that stands out.",
-    image: "/globe.svg",
+    name: "Holiday Hot Chocolate",
+    description: "A unique piece made with care.",
+    price: "$13.99",
+    image: "/FauxConfectionImages/Photoroom-20241120_123910.jpg",
   },
 ];
 
 const Portfolio: React.FC = () => {
   return (
-    <Box sx={{ padding: "2rem" }}>
+    <Box sx={{ padding: "1rem" }}>
       <Typography variant="h3" gutterBottom>
         Faux Confectionerys&apos;
       </Typography>

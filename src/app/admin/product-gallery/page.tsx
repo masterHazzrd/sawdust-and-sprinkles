@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Box, Button, Grid, Typography, TextField } from "@mui/material";
 import Image from "next/image";
@@ -8,30 +8,48 @@ import Image from "next/image";
 const ProductManagementPage: React.FC = () => {
   const router = useRouter();
 
-  // States for FauxConfectionImages settings
-  const [fauxCount, setFauxCount] = useState<number>(3);
-  // States for FurnitureImages settings
+  // States for gallery settings
+  const [fauxCount, setFauxCount] = useState<number>(4);
   const [furnitureCount, setFurnitureCount] = useState<number>(3);
-  // Common state for image size (in pixels)
-  const [imgSize, setImgSize] = useState<number>(200);
+  const [imgSize, setImgSize] = useState<number>(125);
 
-  // For demonstration, we use static arrays for image paths.
-  // In a real project, these might be fetched dynamically.
-  const fauxConfectionImages = [
-    "/FauxConfectionImages/img1.jpg",
-    "/FauxConfectionImages/img2.jpg",
-    "/FauxConfectionImages/img3.jpg",
-    "/FauxConfectionImages/img4.jpg",
-    // ... add more paths as needed
-  ];
+  // States for image data fetched from API endpoints
+  const [fauxConfectionImages, setFauxConfectionImages] = useState<string[]>([]);
+  const [furnitureImages, setFurnitureImages] = useState<string[]>([]);
+  const [error, setError] = useState<string>("");
 
-  const furnitureImages = [
-    "/FurnitureImages/img1.jpg",
-    "/FurnitureImages/img2.jpg",
-    "/FurnitureImages/img3.jpg",
-    "/FurnitureImages/img4.jpg",
-    // ... add more paths as needed
-  ];
+  useEffect(() => {
+    async function fetchFauxConfectionImages() {
+      try {
+        const res = await fetch("/api/gallery/faux-confection");
+        if (!res.ok) throw new Error("Failed to fetch Faux Confection images");
+        const data = await res.json();
+        if (data.success) {
+          setFauxConfectionImages(data.images);
+        } else {
+          throw new Error("Error in fetching Faux Confection images");
+        }
+      } catch (err: any) {
+        setError(err.message || "An error occurred while fetching Faux Confection images.");
+      }
+    }
+    async function fetchFurnitureImages() {
+      try {
+        const res = await fetch("/api/gallery/furniture");
+        if (!res.ok) throw new Error("Failed to fetch Furniture images");
+        const data = await res.json();
+        if (data.success) {
+          setFurnitureImages(data.images);
+        } else {
+          throw new Error("Error in fetching Furniture images");
+        }
+      } catch (err: any) {
+        setError(err.message || "An error occurred while fetching Furniture images.");
+      }
+    }
+    fetchFauxConfectionImages();
+    fetchFurnitureImages();
+  }, []);
 
   return (
     <Box sx={{ padding: "2rem" }}>
@@ -50,7 +68,11 @@ const ProductManagementPage: React.FC = () => {
           Back
         </Button>
       </Box>
-
+      {error && (
+        <Typography variant="body1" color="error" sx={{ mb: 2 }}>
+          {error}
+        </Typography>
+      )}
       {/* Faux Confection Gallery Section */}
       <Box sx={{ my: 4 }}>
         <Typography variant="h5" gutterBottom>
@@ -93,7 +115,6 @@ const ProductManagementPage: React.FC = () => {
           ))}
         </Grid>
       </Box>
-
       {/* Furniture Gallery Section */}
       <Box sx={{ my: 4 }}>
         <Typography variant="h5" gutterBottom>
