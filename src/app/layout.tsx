@@ -14,14 +14,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <body style={{ margin: "10px", paddingTop: "15px", height: "100vh", overflow: "hidden" }}>
+      <body style={{ margin: "10px", paddingTop: "5px", height: "100vh", overflow: "hidden" }}>
         <SessionProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <div
               style={{
                 display: "grid",
-                gridTemplateRows: isAdmin ? "1fr" : "80px 1fr 40px",
+                gridTemplateRows: isAdmin ? "1fr" : "80px 1fr 105px",
                 height: "100%",
               }}
             >

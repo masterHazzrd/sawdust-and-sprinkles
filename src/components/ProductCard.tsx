@@ -1,7 +1,8 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Image from "next/image";
 
 interface Product {
+  price: ReactNode;
   image: string;
   name: string;
   description: string;
@@ -17,9 +18,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       style={{
         border: "1px solid #ccc",
         borderRadius: "8px",
-        padding: "1rem",
-        margin: "1rem",
-        maxWidth: "300px",
+        padding: ".85rem",
+        margin: ".5rem",
+        maxWidth: "500px",
       }}
     >
       {/* Wrap Image in a relative container for fill usage */}
@@ -35,9 +36,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           src={product.image}
           alt={product.name}
           fill
-          style={{ objectFit: "cover", borderRadius: "8px" }}
+          style={{ objectFit: "contain", borderRadius: "8px" }}
         />
       </div>
+      <h4>{product.price}</h4>
       <h3>{product.name}</h3>
       <p>{product.description}</p>
     </div>
