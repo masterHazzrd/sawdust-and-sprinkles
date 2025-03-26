@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState, ChangeEvent, FormEvent } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  ChangeEvent,
+  FormEvent,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
   Box,
@@ -40,6 +46,8 @@ const ProductManagementPage: React.FC = () => {
     name: "",
     description: "",
     image: "",
+    price: "",
+    category: "", // New field for category selection
   });
   const [productError, setProductError] = useState<string>("");
 
@@ -56,7 +64,9 @@ const ProductManagementPage: React.FC = () => {
           throw new Error("Error in fetching Faux Confection images");
         }
       } catch (err: any) {
-        setGalleryError(err.message || "An error occurred while fetching Faux Confection images.");
+        setGalleryError(
+          err.message || "An error occurred while fetching Faux Confection images."
+        );
       }
     }
     async function fetchFurnitureImages() {
@@ -70,7 +80,9 @@ const ProductManagementPage: React.FC = () => {
           throw new Error("Error in fetching Furniture images");
         }
       } catch (err: any) {
-        setGalleryError(err.message || "An error occurred while fetching Furniture images.");
+        setGalleryError(
+          err.message || "An error occurred while fetching Furniture images."
+        );
       }
     }
     fetchFauxImages();
@@ -112,9 +124,13 @@ const ProductManagementPage: React.FC = () => {
   };
 
   // Handlers for new product form
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
-    // For Select component, e.target.value is unknown; cast it to string.
-    setNewProduct({ ...newProduct, [e.target.name as string]: e.target.value as string });
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
+  ) => {
+    setNewProduct({
+      ...newProduct,
+      [e.target.name as string]: e.target.value as string,
+    });
   };
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -123,11 +139,11 @@ const ProductManagementPage: React.FC = () => {
       const res = await fetch("/api/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newProduct),
+        body: JSON.stringify({ ...newProduct, price: Number(newProduct.price) }),
       });
       const data = await res.json();
       if (data.success) {
-        setNewProduct({ name: "", description: "", image: "" });
+        setNewProduct({ name: "", description: "", image: "", price: "", category: "" });
         fetchProducts();
       } else {
         setProductError("Failed to add product.");
@@ -137,8 +153,36 @@ const ProductManagementPage: React.FC = () => {
     }
   };
 
-  // Combine gallery images for Select options
+  // Combine gallery images for the Select options
   const allImages = [...fauxImages, ...furnitureImages];
+
+  // Handlers for product actions
+  const handleApprove = (product: any) => {
+    console.log("Approving product:", product);
+    // TODO: Implement approval logic or API call.
+  };
+
+  const handleEdit = (product: any) => {
+    console.log("Editing product:", product);
+    router.push(`/admin/products/edit/${product._id}`);
+  };
+
+  const handleDelete = async (product: any) => {
+    try {
+      const res = await fetch(`/api/products/${product._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        console.log("Deleted product:", product);
+        fetchProducts();
+      } else {
+        console.error("Failed to delete product.");
+      }
+    } catch (err: any) {
+      console.error("Error deleting product:", err);
+    }
+  };
 
   return (
     <RequireAuth>
@@ -206,7 +250,12 @@ const ProductManagementPage: React.FC = () => {
             {fauxImages.slice(0, fauxCount).map((src, index) => (
               <Grid item key={index}>
                 <Box sx={{ position: "relative", width: imgSize, height: imgSize }}>
-                  <Image src={src} alt={`Faux Confection ${index + 1}`} fill style={{ objectFit: "cover" }} />
+                  <Image
+                    src={src}
+                    alt={`Faux Confection ${index + 1}`}
+                    fill
+                    style={{ objectFit: "cover" }}
+                  />
                 </Box>
               </Grid>
             ))}
@@ -249,7 +298,12 @@ const ProductManagementPage: React.FC = () => {
             {furnitureImages.slice(0, furnitureCount).map((src, index) => (
               <Grid item key={index}>
                 <Box sx={{ position: "relative", width: imgSize, height: imgSize }}>
-                  <Image src={src} alt={`Furniture ${index + 1}`} fill style={{ objectFit: "cover" }} />
+                  <Image
+                    src={src}
+                    alt={`Furniture ${index + 1}`}
+                    fill
+                    style={{ objectFit: "cover" }}
+                  />
                 </Box>
               </Grid>
             ))}
@@ -282,6 +336,29 @@ const ProductManagementPage: React.FC = () => {
               required
               sx={{ mr: 2, mb: 2 }}
             />
+            <TextField
+              label="Price"
+              name="price"
+              value={newProduct.price}
+              onChange={handleInputChange}
+              required
+              sx={{ mr: 2, mb: 2 }}
+            />
+            {/* New Category Field */}
+            <FormControl sx={{ mr: 2, mb: 2, minWidth: 150 }} required>
+              <InputLabel id="category-select-label">Category</InputLabel>
+              <Select
+                labelId="category-select-label"
+                id="category-select"
+                name="category"
+                value={newProduct.category}
+                label="Category"
+                onChange={handleInputChange}
+              >
+                <MenuItem value="refinishedFurniture">Refinished Furniture</MenuItem>
+                <MenuItem value="fauxConfectionery">Faux Confectionery</MenuItem>
+              </Select>
+            </FormControl>
             {/* Replace Image URL TextField with a Select dropdown */}
             <FormControl sx={{ mr: 2, mb: 2, minWidth: 150 }} required>
               <InputLabel id="image-select-label">Image URL</InputLabel>
@@ -312,6 +389,24 @@ const ProductManagementPage: React.FC = () => {
             {products.map((product) => (
               <Grid item key={product._id} xs={12} sm={6} md={4}>
                 <ProductCard product={product} />
+                {/* Product Actions */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    mt: 1,
+                  }}
+                >
+                  <Button variant="outlined" size="small" onClick={() => handleApprove(product)}>
+                    Approve
+                  </Button>
+                  <Button variant="outlined" size="small" onClick={() => handleEdit(product)}>
+                    Edit
+                  </Button>
+                  <Button variant="outlined" size="small" color="error" onClick={() => handleDelete(product)}>
+                    Delete
+                  </Button>
+                </Box>
               </Grid>
             ))}
           </Grid>

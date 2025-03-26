@@ -1,48 +1,37 @@
-import React, { ReactNode } from "react";
+"use client";
+
+import React from "react";
 import Image from "next/image";
+import { Box, Typography } from "@mui/material";
 
 interface Product {
-  price: ReactNode;
-  image: string;
+  _id?: string;
   name: string;
   description: string;
+  image: string;
+  price: number; // Make it optional if some products might not have a price defined
 }
 
-interface ProductCardProps {
-  product: Product;
-}
+const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+  const formattedPrice =
+    product.price !== undefined ? `$${product.price.toFixed(2)}` : "Price Unavailable";
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-        padding: ".85rem",
-        margin: ".5rem",
-        maxWidth: "500px",
-      }}
-    >
-      {/* Wrap Image in a relative container for fill usage */}
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "200px",
-          marginBottom: "1rem",
-        }}
-      >
+    <Box sx={{ border: "1px solid #ccc", borderRadius: 1, p: 2 }}>
+      <Box sx={{ position: "relative", width: "100%", height: 200, mb: 1 }}>
         <Image
           src={product.image}
           alt={product.name}
           fill
-          style={{ objectFit: "contain", borderRadius: "8px" }}
+          style={{ objectFit: "cover", borderRadius: 4 }}
         />
-      </div>
-      <h4>{product.price}</h4>
-      <h3>{product.name}</h3>
-      <p>{product.description}</p>
-    </div>
+      </Box>
+      <Typography variant="h6">{product.name}</Typography>
+      <Typography variant="body2">{product.description}</Typography>
+      <Typography variant="subtitle1" color="primary">
+        {formattedPrice}
+      </Typography>
+    </Box>
   );
 };
 

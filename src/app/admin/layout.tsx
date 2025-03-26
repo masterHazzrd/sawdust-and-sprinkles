@@ -9,7 +9,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <html lang="en">
-      <body style={{ margin: 0, height: "100vh", overflow: "hidden" }}>
+      <body>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <main style={{ overflowY: "auto", height: "100%" }}>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import {
@@ -83,6 +83,9 @@ const AdminDashboard: React.FC = () => {
           </Typography>
           <Button variant="outlined" onClick={() => signOut()} sx={{ mr: 2 }}>
             Logout
+          </Button>
+          <Button variant="outlined" onClick={() => window.open("/", "_blank")}>
+            Home
           </Button>
         </Box>
         {error && <Typography color="error">{error}</Typography>}
