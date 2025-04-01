@@ -10,6 +10,7 @@ interface Product {
   description: string;
   image: string;
   category: "refinishedFurniture" | "fauxConfectionery";
+  approved: boolean; // New field added
 }
 
 const Portfolio: React.FC = () => {
@@ -34,21 +35,23 @@ const Portfolio: React.FC = () => {
     fetchProducts();
   }, []);
 
-  // Split products into two groups by category.
-  const furnitureProducts = products.filter(
+  // Filter out only approved products
+  const approvedProducts = products.filter((p) => p.approved);
+
+  // Split approved products into two groups by category.
+  const furnitureProducts = approvedProducts.filter(
     (p) => p.category === "refinishedFurniture"
   );
-  const confectionProducts = products.filter(
+  const confectionProducts = approvedProducts.filter(
     (p) => p.category === "fauxConfectionery"
   );
 
   return (
     <Box sx={{ padding: "1rem" }}>
       <div style={{ textAlign: "center" }}>
-        <h4>Refinished Furniture</h4>
+        <h3>Refinished Furniture</h3>
       </div>
       {/* Refinished Furniture Section */}
-      
       <Box
         sx={{
           display: "grid",
@@ -77,7 +80,7 @@ const Portfolio: React.FC = () => {
 
       {/* Faux Confectionery Section */}
       <div style={{ textAlign: "center" }}>
-        <h4>Faux Confectionery&apos;s</h4>
+        <h3>Faux Confectionery&apos;s</h3>
       </div>
       <Box
         sx={{

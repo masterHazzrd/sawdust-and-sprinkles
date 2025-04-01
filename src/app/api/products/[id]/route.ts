@@ -18,14 +18,15 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     await connectToDatabase();
     const body = await request.json();
     if (body.price) {
       body.price = Number(body.price);
     }
-    const product = await Product.findByIdAndUpdate(params.id, body, { new: true });
+    const product = await Product.findByIdAndUpdate(id, body, { new: true });
     if (!product) {
       return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
     }

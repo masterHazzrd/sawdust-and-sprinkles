@@ -5,7 +5,8 @@ export interface IProduct extends Document {
   description: string;
   image: string;
   category: "refinishedFurniture" | "fauxConfectionery";
-  price: number; // New field for the price
+  price: number;
+  approved: boolean; // New field for approval status
   createdAt: Date;
   updatedAt: Date;
 }
@@ -16,7 +17,8 @@ const ProductSchema: Schema<IProduct> = new Schema(
     description: { type: String, required: true },
     image: { type: String, required: true },
     category: { type: String, required: true },
-    price: { type: Number, required: true }, // New field definition
+    price: { type: Number, required: true },
+    approved: { type: Boolean, default: false }, // New field definition
   },
   { timestamps: true }
 );

@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <body style={{ margin: "10px", paddingTop: "5px", height: "100vh", overflow: "hidden" }}>
+      <body style={{ marginTop: "10px", height: "100vh", overflow: "hidden" }}>
         <SessionProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />

@@ -157,15 +157,31 @@ const ProductManagementPage: React.FC = () => {
   const allImages = [...fauxImages, ...furnitureImages];
 
   // Handlers for product actions
-  const handleApprove = (product: any) => {
-    console.log("Approving product:", product);
-    // TODO: Implement approval logic or API call.
-  };
+  const handleApprove = async (product: any) => {
+  console.log("Approving product:", product);
+  try {
+    const res = await fetch(`/api/products/${product._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ approved: true }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      console.log("Product approved:", data.product);
+      // Optionally refresh your product list to reflect the change.
+    } else {
+      console.error("Failed to approve product.");
+    }
+  } catch (err: any) {
+    console.error("Error approving product:", err.message);
+  }
+};
 
   const handleEdit = (product: any) => {
-    console.log("Editing product:", product);
-    router.push(`/admin/products/edit/${product._id}`);
-  };
+  console.log("Editing product:", product);
+  router.push(`/admin/products/edit/${product._id}`);
+};
+
 
   const handleDelete = async (product: any) => {
     try {

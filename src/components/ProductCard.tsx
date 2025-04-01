@@ -9,7 +9,7 @@ interface Product {
   name: string;
   description: string;
   image: string;
-  price: number; // Make it optional if some products might not have a price defined
+  price: number; // Assumed to be a number after conversion
 }
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
@@ -18,16 +18,27 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
 
   return (
     <Box sx={{ border: "1px solid #ccc", borderRadius: 1, p: 2 }}>
-      <Box sx={{ position: "relative", width: "100%", height: 200, mb: 1 }}>
+      <Box sx={{ position: "relative", width: "auto", height: 500, mb: 1 }}>
         <Image
           src={product.image}
           alt={product.name}
           fill
-          style={{ objectFit: "cover", borderRadius: 4 }}
+          style={{ objectFit: "contain", borderRadius: 4 }}
         />
       </Box>
-      <Typography variant="h6">{product.name}</Typography>
-      <Typography variant="body2">{product.description}</Typography>
+      <Typography variant="h5">{product.name}</Typography>
+      <Typography
+        variant="body2"
+        sx={{
+          height: "80px",         // Fixed height (adjust as needed)
+          overflow: "hidden",      // Hide overflow text
+          display: "flex",
+          alignItems: "flex-start",
+          padding: "0.5rem",
+        }}
+      >
+        {product.description}
+      </Typography>
       <Typography variant="subtitle1" color="primary">
         {formattedPrice}
       </Typography>
